@@ -18,6 +18,8 @@ jobs:
         with:
           node-version: '18.x'
 
+      - run: "git branch --track main origin/main"
+
       - uses: nrwl/nx-set-shas@v3
       - run: npm ci
 
