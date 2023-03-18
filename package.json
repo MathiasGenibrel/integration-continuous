@@ -4,6 +4,9 @@
   "license": "MIT",
   "scripts": {},
   "private": true,
+  "optionalDependencies": {
+    "@nrwl/nx-linux-x64-gnu": "15.8.7"
+  },
   "devDependencies": {
     "@babel/preset-react": "^7.14.5",
     "@nrwl/cypress": "15.8.7",
