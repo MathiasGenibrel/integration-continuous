@@ -1,68 +1,68 @@
-name: 'Build and Deploy on Production'
-
-on:
-  push:
-    branches:
-      - main
-
-jobs:
-  Build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18.x'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build and test affected apps
-        run: |
-          npx nx format:check
-          npx nx affected --target=lint --all --parallel --max-parallel=3
-          npx nx affected --target=test --all --parallel --max-parallel=3 --ci --code-coverage
-
-      # Use artifact to share build folder with others jobs
-      - name: Save built apps on Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: built-apps
-          path: dist/packages
-
-  Deploy:
-    needs: [build]
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Get Artifact
-        uses: actions/download-artifact@v3
-        with:
-          path: dist
-
-      - name: Rsync Deployments Action
-        uses: Burnett01/rsync-deployments@5.2.1
-        with:
-          switches: -avzr --delete
-          path: src/
-          remote_path: ${{ secrets.DEPLOY_PATH }}
-          remote_host: ${{ secrets.DEPLOY_HOST }}
-          remote_port: ${{ secrets.DEPLOY_PORT }}
-          remote_user: ${{ secrets.DEPLOY_USER }}
-          remote_key: ${{ secrets.DEPLOY_KEY }}
-
-      - name: Deploy to OVH server
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ env.OVH_SERVER_IP }}
-          username: ${{ env.OVH_SERVER_USERNAME }}
-          password: ${{ env.OVH_SERVER_PASSWORD }}
-          script: |
-            docker stop app1 || true
-            docker rm app1 || true
-            docker pull ${{ env.DOCKER_USERNAME }}/app1:latest
-            docker run -d -p 3000:3000 --name app1 ${{ env.DOCKER_USERNAME }}/app1
+#name: 'Build and Deploy on Production'
+#
+#on:
+#  push:
+#    branches:
+#      - main
+#
+#jobs:
+#  Build:
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v3
+#
+#      - name: Setup Node.js environment
+#        uses: actions/setup-node@v3
+#        with:
+#          node-version: '18.x'
+#
+#      - name: Install dependencies
+#        run: npm ci
+#
+#      - name: Build and test affected apps
+#        run: |
+#          npx nx format:check
+#          npx nx affected --target=lint --all --parallel --max-parallel=3
+#          npx nx affected --target=test --all --parallel --max-parallel=3 --ci --code-coverage
+#
+#      # Use artifact to share build folder with others jobs
+#      - name: Save built apps on Artifact
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: built-apps
+#          path: dist/packages
+#
+#  Deploy:
+#    needs: [build]
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - name: Get Artifact
+#        uses: actions/download-artifact@v3
+#        with:
+#          path: dist
+#
+#      - name: Rsync Deployments Action
+#        uses: Burnett01/rsync-deployments@5.2.1
+#        with:
+#          switches: -avzr --delete
+#          path: src/
+#          remote_path: ${{ secrets.DEPLOY_PATH }}
+#          remote_host: ${{ secrets.DEPLOY_HOST }}
+#          remote_port: ${{ secrets.DEPLOY_PORT }}
+#          remote_user: ${{ secrets.DEPLOY_USER }}
+#          remote_key: ${{ secrets.DEPLOY_KEY }}
+#
+#      - name: Deploy to OVH server
+#        uses: appleboy/ssh-action@master
+#        with:
+#          host: ${{ env.OVH_SERVER_IP }}
+#          username: ${{ env.OVH_SERVER_USERNAME }}
+#          password: ${{ env.OVH_SERVER_PASSWORD }}
+#          script: |
+#            docker stop app1 || true
+#            docker rm app1 || true
+#            docker pull ${{ env.DOCKER_USERNAME }}/app1:latest
+#            docker run -d -p 3000:3000 --name app1 ${{ env.DOCKER_USERNAME }}/app1
