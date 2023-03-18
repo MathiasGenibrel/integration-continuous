@@ -51,18 +51,17 @@ jobs:
           path: src/
           remote_path: ${{ secrets.DEPLOY_PATH }}
           remote_host: ${{ secrets.DEPLOY_HOST }}
-          remote_port: ${{ secrets.DEPLOY_PORT }}
           remote_user: ${{ secrets.DEPLOY_USER }}
-          remote_key: ${{ secrets.DEPLOY_KEY }}
+          remote_key: ${{ secrets.DEPLOY_PASSKEY }}
 
-      - name: Deploy to OVH server
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ env.OVH_SERVER_IP }}
-          username: ${{ env.OVH_SERVER_USERNAME }}
-          password: ${{ env.OVH_SERVER_PASSWORD }}
-          script: |
-            docker stop app1 || true
-            docker rm app1 || true
-            docker pull ${{ env.DOCKER_USERNAME }}/app1:latest
-            docker run -d -p 3000:3000 --name app1 ${{ env.DOCKER_USERNAME }}/app1
+#      - name: Deploy to OVH server
+#        uses: appleboy/ssh-action@master
+#        with:
+#          host: ${{ env.OVH_SERVER_IP }}
+#          username: ${{ env.OVH_SERVER_USERNAME }}
+#          password: ${{ env.OVH_SERVER_PASSWORD }}
+#          script: |
+#            docker stop app1 || true
+#            docker rm app1 || true
+#            docker pull ${{ env.DOCKER_USERNAME }}/app1:latest
+#            docker run -d -p 3000:3000 --name app1 ${{ env.DOCKER_USERNAME }}/app1
