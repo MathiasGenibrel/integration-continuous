@@ -18,9 +18,8 @@ jobs:
         with:
           node-version: '18.x'
 
-      - name: Install dependencies
-        uses: nrwl/nx-set-shas@v3
-        run: npm ci
+      - uses: nrwl/nx-set-shas@v3
+      - run: npm ci
 
       - name: Build and test affected apps
         run: |
