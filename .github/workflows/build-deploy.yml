@@ -29,7 +29,7 @@ jobs:
 
       - name: Build
         run: |
-          npx nx affected:build --base=origin/main~1 --head=origin/main
+          npx nx affected:build --base=origin/main --head=origin/main
 
       - run: ls -la
 
