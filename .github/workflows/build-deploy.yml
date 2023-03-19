@@ -44,6 +44,8 @@ jobs:
         with:
           path: dist
 
+      - run: ls -la
+
       - name: Rsync Deployments Action
         uses: Burnett01/rsync-deployments@5.2.1
         with:
