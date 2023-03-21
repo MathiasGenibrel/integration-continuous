@@ -60,14 +60,12 @@ jobs:
           remote_user: ${{ secrets.DEPLOY_USER }}
           remote_key: ${{ secrets.DEPLOY_KEY }}
 
-#      - name: Deploy to OVH server
-#        uses: appleboy/ssh-action@master
-#        with:
-#          host: ${{ env.OVH_SERVER_IP }}
-#          username: ${{ env.OVH_SERVER_USERNAME }}
-#          password: ${{ env.OVH_SERVER_PASSWORD }}
-#          script: |
-#            docker stop app1 || true
-#            docker rm app1 || true
-#            docker pull ${{ env.DOCKER_USERNAME }}/app1:latest
-#            docker run -d -p 3000:3000 --name app1 ${{ env.DOCKER_USERNAME }}/app1
+      - name: Deploy to OVH server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          script: |
+            whoami
+            ls -la
