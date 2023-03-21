@@ -46,15 +46,15 @@ jobs:
       - name: Get Artifact
         uses: actions/download-artifact@v3
         with:
-          path: dist
+          path: ./
 
-      - run: ls -la dist
+      - run: ls -la
 
       - name: Rsync Deployments Action
         uses: Burnett01/rsync-deployments@5.2.1
         with:
           switches: -avzr --delete
-          path: dist/web-app/
+          path: built-apps/web-app/
           remote_path: ${{ secrets.DEPLOY_PATH }}
           remote_host: ${{ secrets.DEPLOY_HOST }}
           remote_user: ${{ secrets.DEPLOY_USER }}
