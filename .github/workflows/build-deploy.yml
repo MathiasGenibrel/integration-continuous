@@ -31,14 +31,12 @@ jobs:
         run: |
           npx nx affected --all --target=build --parallel --max-parallel=3
 
-      - run: ls -la
-
       # Use artifact to share build folder with others jobs
       - name: Save built apps on Artifact
         uses: actions/upload-artifact@v3
         with:
           name: built-apps
-          path: dist/packages
+          path: dist/packages/
 
   Deploy:
     needs: [build]
@@ -50,7 +48,7 @@ jobs:
         with:
           path: dist
 
-      - run: ls -la
+      - run: ls -la dist
 
       - name: Rsync Deployments Action
         uses: Burnett01/rsync-deployments@5.2.1
