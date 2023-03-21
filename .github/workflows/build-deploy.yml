@@ -29,7 +29,7 @@ jobs:
 
       - name: Build
         run: |
-          npx nx affected --target=build --parallel --max-parallel=3 --base=main --head=HEAD
+          npx nx affected --target=build --parallel --max-parallel=3 --base=HEAD~1 --head=HEAD
 
       - run: ls -la
 
